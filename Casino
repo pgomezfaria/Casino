@@ -1,0 +1,132 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.awt.event.ActionListener;
+
+public class Casino extends JFrame implements ActionListener {
+
+    JMenuBar mnuPrincipal;
+    JLabel lbl, lb2;
+    String[] menus = {"Habitaciones", "Acerca de nosotros", "Jugar Online"};
+    char[] mnMenus = {'H', 'C', 'J'};
+    String[][] submenus = {
+        {"Tipos de habitaciones", "Ofertas", "-", "Reservas"},
+        {"Localización", "-", "Contacto"},
+        {"Tragaperras", "Dados", "Póker", "Ruleta"}
+    };
+    char[][] mnSubmenus = {
+        {'T', 'O', '-', 'R'},
+        {'L', '-', 'C'},
+        {'T', 'D', 'P', 'R'}
+    };
+    JTextField txt;
+    JLabel img;
+    double n;
+
+    private JMenuItem item(String tit, char mn) {
+        JMenuItem mnu = new JMenuItem(tit);
+        mnu.setMnemonic(mn);
+        mnu.addActionListener(this);
+        return mnu;
+    }
+
+    public Casino() {
+        super("Casino's Gómez");
+        this.setLayout(null);
+        mnuPrincipal = new JMenuBar();
+        this.setJMenuBar(mnuPrincipal);
+        for (int i = 0; i < submenus.length; i++) {
+            JMenu m = new JMenu(menus[i]);
+            m.setMnemonic(mnMenus[i]);
+            for (int j = 0; j < submenus[i].length; j++) {
+                if (submenus[i][j].equals("-")) {
+                    m.addSeparator();
+                } else {
+                    JMenuItem mi = item(submenus[i][j], mnSubmenus[i][j]);
+                    m.add(mi);
+                }
+            }
+            mnuPrincipal.add(m);
+        }
+        lbl = new JLabel("Bienvenido a Casino's Gómez.");
+        lbl.setLocation(190, 20);
+        lbl.setSize(lbl.getPreferredSize());
+        add(lbl);
+
+        lb2 = new JLabel("Introduzca su dinero");
+        lb2.setLocation(160, 40);
+        lb2.setSize(lb2.getPreferredSize());
+        add(lb2);
+
+        txt = new JTextField(10);
+        txt.setLocation(280, 40);
+        txt.setSize(txt.getPreferredSize());
+        add(txt);
+
+        img = new JLabel();
+        img.setLocation(30, 70);
+        add(img);
+        ImageIcon imag = new ImageIcon(Casino.class.getResource("ruleta.gif"));
+        img.setIcon(imag);
+        img.setSize(img.getPreferredSize());
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("Tragaperras")) {
+            if (txt.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "No ha introducido dinero");
+            } else {
+                Tragaperras f = new Tragaperras(this);
+                f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                f.setSize(600, 300);
+                f.setLocation(0, 0);
+                f.setVisible(true);
+                lb2.setText("Su dinero acumulado es: ");
+                n = f.num;
+                txt.setEditable(false);
+                txt.setText("" + n);
+            }
+        }
+        if (e.getActionCommand().equals("Dados")) {
+            if (txt.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "No ha introducido dinero");
+            } else {
+                Dados f = new Dados(this);
+                f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                f.setSize(600, 350);
+                f.setLocation(100, 0);
+                f.setVisible(true);
+            }
+
+        }
+        if (e.getActionCommand().equals("Póker")) {
+            if (txt.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "No ha introducido dinero");
+            } else {
+                Poker f = new Poker(this);
+                f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                f.setSize(600, 350);
+                f.setLocation(100, 0);
+                f.setVisible(true);
+            }
+
+        }
+        if (e.getActionCommand().equals("Tipos de habitaciones")) {
+            Habitaciones f = new Habitaciones(this);
+            f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            f.setSize(600, 300);
+            f.setLocation(100, 0);
+            f.setVisible(true);
+        }
+        if (e.getActionCommand().equals("Reservas")) {
+            Reservas f = new Reservas(this);
+            f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            f.setSize(600, 300);
+            f.setLocation(100, 0);
+            f.setVisible(true);
+        }
+
+    }
+}
